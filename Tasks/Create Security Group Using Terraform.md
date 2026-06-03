@@ -1,1 +1,93 @@
+# Day 03 – Create Security Group Using Terraform
 
+---
+
+## Task Overview
+
+The Nautilus DevOps team is configuring AWS security controls as part of their cloud migration strategy. They need to create a Security Group that allows HTTP and SSH access.
+
+---
+
+# Objective
+
+Create a Security Group with:
+
+| Property  | Value        |
+| --------- | ------------ |
+| Name      | `xfusion-sg` |
+| HTTP Port | `80`         |
+| SSH Port  | `22`         |
+| Region    | `us-east-1`  |
+
+---
+
+# Terraform Configuration
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_security_group" "xfusion_sg" {
+  name        = "xfusion-sg"
+  description = "Security group for Nautilus App Servers"
+
+  ingress {
+    description = "HTTP Access"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH Access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+```
+
+---
+
+# Commands Used
+
+```bash
+terraform init
+terraform validate
+terraform plan
+terraform apply -auto-approve
+```
+
+---
+
+# Key Learnings
+
+* Security Groups act as virtual firewalls.
+* Ingress rules control incoming traffic.
+* SSH uses port 22.
+* HTTP uses port 80.
+
+---
+
+# Interview Questions
+
+### What is a Security Group?
+
+A virtual firewall that controls inbound and outbound traffic.
+
+---
+
+### Difference between Security Group and NACL?
+
+Security Groups are stateful while NACLs are stateless.
+
+---
+
+### Which protocol is used for SSH?
+
+```text
+TCP
+```
